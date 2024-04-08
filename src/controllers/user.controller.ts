@@ -10,9 +10,9 @@ export class UserController {
     try {
       const { name, email, password } = request.body
 
-      const newUser: CreateUserDTO = { name, email, password }
+      const createUserDTO: CreateUserDTO = { name, email, password }
 
-      const result = await userService.create(newUser)
+      const result = await userService.create(createUserDTO)
 
       return response.status(result.code).json(result)
     } catch (error) {
@@ -45,9 +45,9 @@ export class UserController {
       const { userId } = request.params
       const { name, email, password } = request.body
 
-      const updatedUser: UpdateUserDTO = { userId, name, email, password }
+      const updateUserDTO: UpdateUserDTO = { userId, name, email, password }
 
-      const result = await userService.update(updatedUser)
+      const result = await userService.update(updateUserDTO)
 
       response.status(result.code).json(result)
     } catch (error) {

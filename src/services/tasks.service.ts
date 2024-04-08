@@ -3,7 +3,7 @@ import { repository } from "../database/prisma.connection"
 import { ResponseDTO } from "../dtos/response.dto"
 import { CreateTaskDTO, UpdateTaskDTO } from "../dtos/tasks.dto"
 
-export class TweetService {
+export class TaskService {
   public async findAll(userId: string): Promise<ResponseDTO> {
     const tasks = await repository.task.findMany({
       where: { userId },
