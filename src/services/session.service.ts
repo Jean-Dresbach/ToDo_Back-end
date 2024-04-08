@@ -10,6 +10,11 @@ export class SessionService {
       data: {
         csrfToken: createSessionDTO.csrfToken,
         userId: createSessionDTO.userId
+      },
+      select: {
+        id: true,
+        csrfToken: true,
+        userId: true
       }
     })
 
@@ -17,6 +22,38 @@ export class SessionService {
       code: 201,
       message: "Sessão criada com sucesso.",
       data: newSession
+    }
+  }
+
+  public async delete(sessionId: string): Promise<ResponseDTO> {
+    const session = await repository.session.findUnique({
+      where: {
+        id: sessionId
+      }
+    })
+
+    if (!session) {
+      return {
+        code: 404,
+        message: "Sessão não encontrada."
+      }
+    }
+
+    const deletedSession = await repository.session.delete({
+      where: {
+        id: sessionId
+      },
+      select: {
+        id: true,
+        csrfToken: true,
+        userId: true
+      }
+    })
+
+    return {
+      code: 404,
+      message: "Sessão deletada com sucesso.",
+      data: deletedSession
     }
   }
 }
