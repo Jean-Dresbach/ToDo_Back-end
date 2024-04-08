@@ -1,0 +1,39 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @prisma/client cors express
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\nodejs\;C:\Users\jeanr\AppData\Local\Microsoft\WindowsApps;;C:\Users\jeanr\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\jeanr\AppData\Local\Yarn\bin;C:\Users\jeanr\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  20.11.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\jeanr\Documents\Programação\ToDo_Back-end\package.json: Unexpected non-whitespace character after JSON at position 95
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "ToDo_Back-end",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT"
+  }  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only ./src",
+    "build": "tsc"
+  },
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
