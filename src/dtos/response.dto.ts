@@ -10,7 +10,7 @@ export interface ResponseSessionDTO {
   data?: SessionData
 }
 
-export interface ResponseUserDTO {
+export interface ResponseDTO {
   code: number
   message: string
   data?: any

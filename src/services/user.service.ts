@@ -1,12 +1,14 @@
 import { repository } from "../database/prisma.connection"
 
 import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto"
-import { ResponseUserDTO } from "../dtos/response.dto"
+import { ResponseDTO } from "../dtos/response.dto"
 
 export class UserService {
-  public async create(userDTO: CreateUserDTO): Promise<ResponseUserDTO> {
-    const { email, name, password } = userDTO
-
+  public async create({
+    email,
+    name,
+    password
+  }: CreateUserDTO): Promise<ResponseDTO> {
     const existingUser = await repository.user.findUnique({
       where: { email }
     })
@@ -40,7 +42,7 @@ export class UserService {
     }
   }
 
-  public async findById(id: string): Promise<ResponseUserDTO> {
+  public async findById(id: string): Promise<ResponseDTO> {
     const user = await repository.user.findUnique({
       where: { id },
       select: {
@@ -65,9 +67,12 @@ export class UserService {
     }
   }
 
-  public async update(userDTO: UpdateUserDTO): Promise<ResponseUserDTO> {
-    const { userId, email, name, password } = userDTO
-
+  public async update({
+    userId,
+    email,
+    name,
+    password
+  }: UpdateUserDTO): Promise<ResponseDTO> {
     const user = await repository.user.findUnique({
       where: {
         id: userId
@@ -105,7 +110,7 @@ export class UserService {
     }
   }
 
-  public async delete(id: string): Promise<ResponseUserDTO> {
+  public async delete(id: string): Promise<ResponseDTO> {
     const user = await repository.user.findUnique({
       where: { id }
     })
