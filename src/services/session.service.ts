@@ -1,15 +1,28 @@
+import { randomUUID } from "crypto"
 import { repository } from "../database/prisma.connection"
 
-import { CreateSessionDTO, ResponseDTO } from "../dtos"
+import { ResponseSessionDTO } from "../dtos"
 
 export class SessionService {
-  public async create(
-    createSessionDTO: CreateSessionDTO
-  ): Promise<ResponseDTO> {
+  public async login(
+    email: string,
+    password: string
+  ): Promise<ResponseSessionDTO> {
+    const user = await repository.user.findFirst({
+      where: { email, password }
+    })
+
+    if (!user) {
+      return {
+        code: 400,
+        message: "Credenciais inválidas."
+      }
+    }
+
     const newSession = await repository.session.create({
       data: {
-        csrfToken: createSessionDTO.csrfToken,
-        userId: createSessionDTO.userId
+        csrfToken: randomUUID(),
+        userId: user.id
       },
       select: {
         id: true,
@@ -19,17 +32,15 @@ export class SessionService {
     })
 
     return {
-      code: 201,
-      message: "Sessão criada com sucesso.",
+      code: 200,
+      message: "Login realizado com sucesso.",
       data: newSession
     }
   }
 
-  public async delete(sessionId: string): Promise<ResponseDTO> {
+  public async logout(id: string): Promise<ResponseSessionDTO> {
     const session = await repository.session.findUnique({
-      where: {
-        id: sessionId
-      }
+      where: { id }
     })
 
     if (!session) {
@@ -40,9 +51,7 @@ export class SessionService {
     }
 
     const deletedSession = await repository.session.delete({
-      where: {
-        id: sessionId
-      },
+      where: { id },
       select: {
         id: true,
         csrfToken: true,
@@ -51,8 +60,8 @@ export class SessionService {
     })
 
     return {
-      code: 404,
-      message: "Sessão deletada com sucesso.",
+      code: 200,
+      message: "Logout realizado com sucesso.",
       data: deletedSession
     }
   }
