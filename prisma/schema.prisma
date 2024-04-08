@@ -43,6 +43,9 @@ model Task {
   userId String @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
 
+  createdAt DateTime @default(now()) @map("crated_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("tasks")
 }
 
@@ -52,6 +55,8 @@ model Session {
 
   userId String @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("crated_at")
 
   @@map("sessions")
 }
