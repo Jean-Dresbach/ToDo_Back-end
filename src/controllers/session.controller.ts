@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 
-import { SessionService } from "../services"
+import { SessionService } from "../services/session.service"
 
 const sessionService = new SessionService()
 

@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto"
 import { repository } from "../database/prisma.connection"
 
-import { ResponseSessionDTO } from "../dtos"
+import { ResponseSessionDTO } from "../dtos/response.dto"
 
 export class SessionService {
   public async login(

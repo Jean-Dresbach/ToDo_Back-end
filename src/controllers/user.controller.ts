@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 
-import { UserService } from "../services"
-import { CreateUserDTO, UpdateUserDTO } from "../dtos"
+import { UserService } from "../services/user.service"
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto"
 
 const userService = new UserService()
 

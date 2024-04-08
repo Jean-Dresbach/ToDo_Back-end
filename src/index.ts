@@ -1,7 +1,8 @@
 import express from "express"
 import cors from "cors"
 
-import { sessionRoutes, userRoutes } from "./routes"
+import sessionRoutes from "./routes/session.routes"
+import userRoutes from "./routes/user.routes"
 
 const app = express()
 app.use(express.json())

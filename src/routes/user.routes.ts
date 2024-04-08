@@ -1,16 +1,19 @@
 import express from "express"
 
 import { UserController } from "../controllers/user.controller"
-import { validateLoginToken, validateUserCreate } from "../middlewares"
+import { validateLoginToken } from "../middlewares/session.middleware"
+import { validateUserCreate } from "../middlewares/user.middleware"
 
-export const userRoutes = express.Router()
+export const router = express.Router()
 
 const userController = new UserController()
 
-userRoutes.post("/users", validateUserCreate, userController.store)
+router.post("/users", validateUserCreate, userController.store)
 
-userRoutes.get("/users/:userId", validateLoginToken, userController.show)
+router.get("/users/:userId", validateLoginToken, userController.show)
 
-userRoutes.put("/users/:userId", validateLoginToken, userController.update)
+router.put("/users/:userId", validateLoginToken, userController.update)
 
-userRoutes.delete("/users/:userId", validateLoginToken, userController.delete)
+router.delete("/users/:userId", validateLoginToken, userController.delete)
+
+export default router

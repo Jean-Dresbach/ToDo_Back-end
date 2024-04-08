@@ -1,6 +1,7 @@
 import { repository } from "../database/prisma.connection"
 
-import { CreateUserDTO, UpdateUserDTO, ResponseUserDTO } from "../dtos"
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto"
+import { ResponseUserDTO } from "../dtos/response.dto"
 
 export class UserService {
   public async create(userDTO: CreateUserDTO): Promise<ResponseUserDTO> {
