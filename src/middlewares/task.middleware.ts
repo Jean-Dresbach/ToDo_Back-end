@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express"
 
+const validateUpdateFields = (fields: Record<string, any>) => {
+  const isEmpty = Object.values(fields).some((value) => value?.trim() === "")
+  const isMissing = Object.values(fields).every((value) => value === undefined)
+  return { isEmpty, isMissing }
+}
+
 export async function validateCreateTask(
   request: Request,
   response: Response,
@@ -8,11 +14,14 @@ export async function validateCreateTask(
   try {
     const { title, description } = request.body
 
-    if (!title || !description) {
+    if (!title?.trim() || !description?.trim()) {
       return response.status(400).json({
         message: "Preencha todos os campos obrigatórios."
       })
     }
+
+    request.body.title = title.trim()
+    request.body.description = description.trim()
 
     next()
   } catch (error) {
@@ -24,19 +33,35 @@ export async function validateCreateTask(
   }
 }
 
-export async function validateTaskId(
+export async function validateUpdateUser(
   request: Request,
   response: Response,
   next: NextFunction
 ) {
   try {
-    const { taskId } = request.params
+    const { title, description, status } = request.body
 
-    if (!taskId) {
+    const { isEmpty, isMissing } = validateUpdateFields({
+      title,
+      description,
+      status
+    })
+
+    if (isMissing) {
       return response.status(400).json({
-        message: "Id da task não informado."
+        message: "Nenhum campo enviado para atualização."
       })
     }
+
+    if (isEmpty) {
+      return response.status(400).json({
+        message: "Os campos a serem atualizados não podem estar vazios."
+      })
+    }
+
+    request.body.name = title?.trim()
+    request.body.email = description?.trim()
+    request.body.password = status?.trim()
 
     next()
   } catch (error) {

@@ -1,13 +1,10 @@
 import { randomUUID } from "crypto"
 import { repository } from "../database/prisma.connection"
 
-import { ResponseSessionDTO } from "../dtos/response.dto"
+import { ResponseDTO } from "../dtos/response.dto"
 
 export class SessionService {
-  public async login(
-    email: string,
-    password: string
-  ): Promise<ResponseSessionDTO> {
+  public async login(email: string, password: string): Promise<ResponseDTO> {
     const user = await repository.user.findFirst({
       where: { email, password }
     })
@@ -26,8 +23,7 @@ export class SessionService {
       },
       select: {
         id: true,
-        csrfToken: true,
-        userId: true
+        csrfToken: true
       }
     })
 
@@ -38,7 +34,7 @@ export class SessionService {
     }
   }
 
-  public async logout(id: string): Promise<ResponseSessionDTO> {
+  public async logout(id: string): Promise<ResponseDTO> {
     const session = await repository.session.findUnique({
       where: { id }
     })
@@ -50,19 +46,13 @@ export class SessionService {
       }
     }
 
-    const deletedSession = await repository.session.delete({
-      where: { id },
-      select: {
-        id: true,
-        csrfToken: true,
-        userId: true
-      }
+    await repository.session.delete({
+      where: { id }
     })
 
     return {
       code: 200,
-      message: "Logout realizado com sucesso.",
-      data: deletedSession
+      message: "Logout realizado com sucesso."
     }
   }
 }

@@ -4,10 +4,10 @@ import { TaskController } from "../controllers/task.controller"
 import { validateLoginToken } from "../middlewares/session.middleware"
 import {
   validateCreateTask,
-  validateTaskId
+  validateUpdateUser
 } from "../middlewares/task.middleware"
 
-export const router = express.Router()
+const router = express.Router()
 
 const taskController = new TaskController()
 
@@ -20,24 +20,16 @@ router.post(
   taskController.store
 )
 
-router.get(
-  "/tasks/:userId/task/:taskId",
-  validateLoginToken,
-  validateTaskId,
-  taskController.show
-)
-
 router.put(
   "/tasks/:userId/task/:taskId",
   validateLoginToken,
-  validateTaskId,
+  validateUpdateUser,
   taskController.update
 )
 
 router.delete(
   "/tasks/:userId/task/:taskId",
   validateLoginToken,
-  validateTaskId,
   taskController.delete
 )
 

@@ -38,7 +38,7 @@ export async function validateLoginToken(
     const { userId } = request.params
     const { authorization } = request.headers
 
-    if (!sessionId || !authorization || !userId) {
+    if (!sessionId || !authorization) {
       return response.status(401).json({
         message: "Não autorizado."
       })
@@ -65,6 +65,12 @@ export async function validateLoginToken(
     }
 
     if (session.csrfToken !== authorization) {
+      return response.status(401).json({
+        message: "Não autorizado."
+      })
+    }
+
+    if (session.userId !== userId) {
       return response.status(401).json({
         message: "Não autorizado."
       })

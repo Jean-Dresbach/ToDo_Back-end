@@ -25,32 +25,15 @@ export class TaskController {
   public async store(request: Request, response: Response) {
     try {
       const { userId } = request.params
-      const { title, description, status } = request.body
+      const { title, description } = request.body
 
       const createTaskDTO: CreateTaskDTO = {
         title,
         description,
-        userId,
-        status
+        userId
       }
 
       const result = await taskService.create(createTaskDTO)
-
-      return response.status(result.code).json(result)
-    } catch (error) {
-      console.log(error)
-
-      return response.status(500).json({
-        message: "Erro interno do servidor."
-      })
-    }
-  }
-
-  public async show(request: Request, response: Response) {
-    try {
-      const { taskId } = request.params
-
-      const result = await taskService.findById(taskId)
 
       return response.status(result.code).json(result)
     } catch (error) {

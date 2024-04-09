@@ -6,7 +6,7 @@ const validateUpdateFields = (fields: Record<string, any>) => {
   return { isEmpty, isMissing }
 }
 
-export async function validateUserCreate(
+export async function validateCreateUser(
   request: Request,
   response: Response,
   next: NextFunction
@@ -14,7 +14,7 @@ export async function validateUserCreate(
   try {
     const { name, email, password } = request.body
 
-    if (!name || !email || !password) {
+    if (!name?.trim() || !email?.trim() || !password?.trim()) {
       return response.status(400).json({
         message: "Preencha todos os campos obrigatórios."
       })
@@ -34,7 +34,7 @@ export async function validateUserCreate(
   }
 }
 
-export async function validateUserUpdate(
+export async function validateUpdateUser(
   request: Request,
   response: Response,
   next: NextFunction

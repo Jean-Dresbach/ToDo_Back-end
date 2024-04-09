@@ -25,53 +25,19 @@ export class TaskService {
   public async create({
     title,
     description,
-    status,
     userId
   }: CreateTaskDTO): Promise<ResponseDTO> {
-    const newTask = await repository.task.create({
+    await repository.task.create({
       data: {
         title,
         description,
-        status,
         userId
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        userId: true
       }
     })
 
     return {
       code: 201,
-      message: "Task criada com sucesso.",
-      data: newTask
-    }
-  }
-
-  public async findById(id: string): Promise<ResponseDTO> {
-    const task = await repository.task.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        userId: true
-      }
-    })
-
-    if (!task) {
-      return {
-        code: 404,
-        message: "Task não encontrada."
-      }
-    }
-
-    return {
-      code: 200,
-      message: "Task encontrada com sucesso.",
-      data: task
+      message: "Task criada com sucesso."
     }
   }
 
@@ -92,25 +58,18 @@ export class TaskService {
       }
     }
 
-    const updatedTask = await repository.task.update({
+    await repository.task.update({
       where: { id },
       data: {
         title,
         description,
         status
-      },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        userId: true
       }
     })
 
     return {
       code: 200,
-      message: "Task atualizada com sucesso.",
-      data: updatedTask
+      message: "Task atualizada com sucesso."
     }
   }
 
@@ -126,20 +85,13 @@ export class TaskService {
       }
     }
 
-    const deletedTask = await repository.task.delete({
-      where: { id },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        userId: true
-      }
+    await repository.task.delete({
+      where: { id }
     })
 
     return {
       code: 200,
-      message: "Task removida com sucesso.",
-      data: deletedTask
+      message: "Task removida com sucesso."
     }
   }
 }

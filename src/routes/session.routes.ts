@@ -6,7 +6,7 @@ import {
   validateLoginToken
 } from "../middlewares/session.middleware"
 
-export const router = express.Router()
+const router = express.Router()
 
 const sessionController = new SessionController()
 

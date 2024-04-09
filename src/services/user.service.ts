@@ -21,24 +21,17 @@ export class UserService {
       }
     }
 
-    const newUser = await repository.user.create({
+    await repository.user.create({
       data: {
         name,
         email,
         password
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true
       }
     })
 
     return {
       code: 201,
-      message: "Usuário criado com sucesso.",
-      data: newUser
+      message: "Usuário criado com sucesso."
     }
   }
 
@@ -86,7 +79,7 @@ export class UserService {
       }
     }
 
-    const updatedUser = await repository.user.update({
+    await repository.user.update({
       where: {
         id: userId
       },
@@ -94,19 +87,12 @@ export class UserService {
         name: name,
         email: email,
         password: password
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true
       }
     })
 
     return {
       code: 200,
-      message: "Usuário atualizado com sucesso.",
-      data: updatedUser
+      message: "Usuário atualizado com sucesso."
     }
   }
 
@@ -122,20 +108,13 @@ export class UserService {
       }
     }
 
-    const deletedUser = await repository.user.delete({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true
-      }
+    await repository.user.delete({
+      where: { id }
     })
 
     return {
       code: 200,
-      message: "Usuário removido com sucesso.",
-      data: deletedUser
+      message: "Usuário removido com sucesso."
     }
   }
 }
