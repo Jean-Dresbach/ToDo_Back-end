@@ -1,13 +1,16 @@
 import express from "express"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 
 import sessionRoutes from "./routes/session.routes"
 import userRoutes from "./routes/user.routes"
 import taskRoutes from "./routes/task.routes"
 
 const app = express()
+
 app.use(express.json())
 app.use(cors({ origin: "http://localhost:3333", credentials: true }))
+app.use(cookieParser())
 
 app.use(sessionRoutes)
 app.use(userRoutes)
