@@ -7,7 +7,7 @@ import taskRoutes from "./routes/task.routes"
 
 const app = express()
 app.use(express.json())
-app.use(cors({ credentials: true }))
+app.use(cors({ origin: "http://localhost:3333", credentials: true }))
 
 app.use(sessionRoutes)
 app.use(userRoutes)

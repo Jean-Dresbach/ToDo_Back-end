@@ -7,17 +7,7 @@ const sessionService = new SessionService()
 export class SessionController {
   public async login(request: Request, response: Response) {
     try {
-      const email = request.body.emailOrUsername.trim()
-      const password = request.body.password.trim()
-
-      request.body.emailOrUsername = email
-      request.body.password = password
-
-      if (!email || !password) {
-        return response.status(400).json({
-          message: "Preencha os campos obrigatórios."
-        })
-      }
+      const { email, password } = request.body
 
       const result = await sessionService.login(email, password)
 
