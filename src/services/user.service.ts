@@ -35,31 +35,6 @@ export class UserService {
     }
   }
 
-  public async findById(id: string): Promise<ResponseDTO> {
-    const user = await repository.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true
-      }
-    })
-
-    if (!user) {
-      return {
-        code: 404,
-        message: "Usuário não encontrado."
-      }
-    }
-
-    return {
-      code: 200,
-      message: "Usuário encontrado com sucesso.",
-      data: user
-    }
-  }
-
   public async update({
     userId,
     email,

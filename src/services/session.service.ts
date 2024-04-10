@@ -6,7 +6,13 @@ import { ResponseDTO } from "../dtos/response.dto"
 export class SessionService {
   public async login(email: string, password: string): Promise<ResponseDTO> {
     const user = await repository.user.findFirst({
-      where: { email, password }
+      where: { email, password },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true
+      }
     })
 
     if (!user) {
@@ -30,7 +36,10 @@ export class SessionService {
     return {
       code: 200,
       message: "Login realizado com sucesso.",
-      data: newSession
+      data: {
+        session: newSession,
+        user
+      }
     }
   }
 

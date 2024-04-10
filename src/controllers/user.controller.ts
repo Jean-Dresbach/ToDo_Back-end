@@ -24,22 +24,6 @@ export class UserController {
     }
   }
 
-  public async show(request: Request, response: Response) {
-    try {
-      const { userId } = request.params
-
-      const result = await userService.findById(userId)
-
-      return response.status(result.code).json(result)
-    } catch (error) {
-      console.log(error)
-
-      return response.status(500).json({
-        message: "Erro interno do servidor."
-      })
-    }
-  }
-
   public async update(request: Request, response: Response) {
     try {
       const { userId } = request.params
