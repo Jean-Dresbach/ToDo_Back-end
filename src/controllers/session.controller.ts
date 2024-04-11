@@ -11,16 +11,24 @@ export class SessionController {
 
       const result = await sessionService.login(email, password)
 
+      if (result.code !== 200) {
+        return response.status(result.code).json(result)
+      }
+
       return response
         .cookie("sessionId", result.data.session.id, {
           secure: true,
           httpOnly: true,
-          sameSite: "none"
+          sameSite: "none",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         })
         .status(result.code)
         .json({
-          csrfToken: result.data?.csrfToken,
-          message: result.message
+          ...result,
+          data: {
+            ...result.data,
+            session: { csrfToken: result.data.session.csrfToken }
+          }
         })
     } catch (error) {
       console.log(error)
