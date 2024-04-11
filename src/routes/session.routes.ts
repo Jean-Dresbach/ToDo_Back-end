@@ -12,6 +12,6 @@ const sessionController = new SessionController()
 
 router.post("/login", validateLogin, sessionController.login)
 
-router.post("/logout/:userId", validateLoginToken, sessionController.logout)
+router.delete("/logout/:userId", validateLoginToken, sessionController.logout)
 
 export default router

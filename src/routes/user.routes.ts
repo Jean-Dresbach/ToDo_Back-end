@@ -13,6 +13,8 @@ const userController = new UserController()
 
 router.post("/users", validateCreateUser, userController.store)
 
+router.get("/users:userId", validateLoginToken, userController.show)
+
 router.put(
   "/users/:userId",
   validateLoginToken,

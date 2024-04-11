@@ -12,13 +12,7 @@ export class SessionService {
 
   public async login(email: string, password: string): Promise<ResponseDTO> {
     const user = await repository.user.findFirst({
-      where: { email, password },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true
-      }
+      where: { email, password }
     })
 
     if (!user) {
@@ -40,6 +34,7 @@ export class SessionService {
       },
       select: {
         id: true,
+        userId: true,
         csrfToken: true
       }
     })
@@ -47,10 +42,7 @@ export class SessionService {
     return {
       code: 200,
       message: "Login realizado com sucesso.",
-      data: {
-        session: newSession,
-        user
-      }
+      data: newSession
     }
   }
 

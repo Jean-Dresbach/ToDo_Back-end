@@ -16,7 +16,7 @@ export class SessionController {
       }
 
       return response
-        .cookie("sessionId", result.data.session.id, {
+        .cookie("sessionId", result.data.id, {
           secure: true,
           httpOnly: true,
           sameSite: "none",
@@ -24,11 +24,9 @@ export class SessionController {
         })
         .status(result.code)
         .json({
-          ...result,
-          data: {
-            ...result.data,
-            session: { csrfToken: result.data.session.csrfToken }
-          }
+          message: result.message,
+          code: result.code,
+          data: { userId: result.data.userId, csrfToken: result.data.csrfToken }
         })
     } catch (error) {
       console.log(error)
