@@ -18,7 +18,8 @@ export class SessionService {
     if (!user) {
       return {
         code: 400,
-        message: "Credenciais inválidas."
+        message: "Credenciais inválidas.",
+        field: "all"
       }
     }
 

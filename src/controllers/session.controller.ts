@@ -12,7 +12,7 @@ export class SessionController {
       const result = await sessionService.login(email, password)
 
       return response
-        .cookie("sessionId", result.data?.id, {
+        .cookie("sessionId", result.data.session.id, {
           secure: true,
           httpOnly: true,
           sameSite: "none"
