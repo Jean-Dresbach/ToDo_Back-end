@@ -55,17 +55,6 @@ export class SessionService {
   }
 
   public async logout(id: string): Promise<ResponseDTO> {
-    const session = await repository.session.findUnique({
-      where: { id }
-    })
-
-    if (!session) {
-      return {
-        code: 404,
-        message: "Sessão não encontrada."
-      }
-    }
-
     await repository.session.delete({
       where: { id }
     })

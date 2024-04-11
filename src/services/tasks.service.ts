@@ -10,8 +10,7 @@ export class TaskService {
       select: {
         id: true,
         title: true,
-        description: true,
-        userId: true
+        description: true
       }
     })
 
