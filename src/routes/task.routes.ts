@@ -11,24 +11,24 @@ const router = express.Router()
 
 const taskController = new TaskController()
 
-router.get("/tasks/:userId", validateLoginToken, taskController.index)
+router.get("/tasks/:userId/create", validateLoginToken, taskController.index)
 
 router.post(
-  "/tasks/:userId",
+  "/tasks/:userId/findMany",
   validateLoginToken,
   validateCreateTask,
   taskController.store
 )
 
 router.put(
-  "/tasks/:userId/task/:taskId",
+  "/tasks/:userId/updateTask/:taskId",
   validateLoginToken,
   validateUpdateUser,
   taskController.update
 )
 
 router.delete(
-  "/tasks/:userId/task/:taskId",
+  "/tasks/:userId/deleteTask/:taskId",
   validateLoginToken,
   taskController.delete
 )

@@ -59,19 +59,6 @@ export class UserService {
     name,
     password
   }: UpdateUserDTO): Promise<ResponseDTO> {
-    const user = await repository.user.findUnique({
-      where: {
-        id: userId
-      }
-    })
-
-    if (!user) {
-      return {
-        code: 404,
-        message: "Usuário não encontrado."
-      }
-    }
-
     await repository.user.update({
       where: {
         id: userId
@@ -90,17 +77,6 @@ export class UserService {
   }
 
   public async delete(id: string): Promise<ResponseDTO> {
-    const user = await repository.user.findUnique({
-      where: { id }
-    })
-
-    if (!user) {
-      return {
-        code: 404,
-        message: "Usuário não encontrado."
-      }
-    }
-
     await repository.user.delete({
       where: { id }
     })

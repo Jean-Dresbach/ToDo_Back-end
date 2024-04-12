@@ -11,17 +11,21 @@ const router = express.Router()
 
 const userController = new UserController()
 
-router.post("/users", validateCreateUser, userController.store)
+router.post("/users/create", validateCreateUser, userController.store)
 
-router.get("/users:userId", validateLoginToken, userController.show)
+router.get("/users/:userId/findById", validateLoginToken, userController.show)
 
 router.put(
-  "/users/:userId",
+  "/users/:userId/update",
   validateLoginToken,
   validateUpdateUser,
   userController.update
 )
 
-router.delete("/users/:userId", validateLoginToken, userController.delete)
+router.delete(
+  "/users/:userId/delete",
+  validateLoginToken,
+  userController.delete
+)
 
 export default router

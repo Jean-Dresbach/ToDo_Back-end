@@ -1,0 +1,744 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ToDo API",
+    "description": "Esta API é responsável pela manipulação de tarefas, permitindo aos usuários criar, listar, atualizar e excluir suas tarefas. Além disso, oferece recursos de autenticação para garantir a segurança das operações. Destaca-se que as sessões de login expiradas são automaticamente limpas a cada 24 horas, garantindo a eficiência e a segurança do sistema.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "API de testes"
+    }
+  ],
+  "paths": {
+    "/tasks/{userId}/create": {
+      "post": {
+        "summary": "Criar task",
+        "description": "Rota responsável pela criação de uma nova task",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              },
+              "examples": {
+                "task": {
+                  "value": {
+                    "title": "Nova Tarefa",
+                    "description": "Terminar até quinta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "Preencha todos os campos obrigatórios"
+          },
+          "201": {
+            "description": "Task criada com sucesso"
+          }
+        }
+      }
+    },
+    "/tasks/{userId}/findMany": {
+      "get": {
+        "summary": "Buscar tasks",
+        "description": "Rota responsável por retornar todas as tasks de um usuário",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Mensagem de sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Tasks do usuário listadas com sucesso"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Task"
+                      },
+                      "description": "Array de tasks do usuário"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Tasks do usuário listadas com sucesso",
+                      "tasks": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{userId}/update/{taskId}": {
+      "put": {
+        "summary": "Aualizar tasks",
+        "description": "Rota responsável por atualizar uma task de um usuário",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID da tarefa a ser atualizada",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Task"
+              },
+              "examples": {
+                "task": {
+                  "value": {
+                    "title": "Título atulizado",
+                    "description": "Descrição atulizada",
+                    "status": "COMPLETED"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Não encontrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Usuário não encontrado"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "message": "Task não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "Requisição ruím",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Nenhum campo enviado para atualização"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "message": "Os campos a serem atualizados não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Task atualizada com sucesso"
+          }
+        }
+      }
+    },
+    "/tasks/{userId}/delete/{taskId}": {
+      "delete": {
+        "summary": "Excluir task",
+        "description": "Rota responsável por deletar uma task de um usuário",
+        "tags": ["Tasks"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID da tarefa a ser atualizada",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Não encontrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Usuário não encontrado"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "message": "Task não encontrada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Task removida com sucesso"
+          }
+        }
+      }
+    },
+    "/users/create": {
+      "post": {
+        "summary": "Registrar usuário",
+        "description": "Rota responsável pela criação de um novo usuário",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "task": {
+                  "value": {
+                    "name": "John Doe",
+                    "email": "john@gmail.com",
+                    "password": "senha_secreta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "409": {
+            "description": "Conflito",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "emailAlreadyExists": {
+                    "value": {
+                      "message": "E-mail já cadastrado",
+                      "field": "email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Preencha todos os campos obrigatórios"
+          },
+          "201": {
+            "description": "Usuário criado com sucesso"
+          }
+        }
+      }
+    },
+    "/users/{userId}/findById": {
+      "get": {
+        "summary": "Buscar usuário",
+        "description": "Rota responsável pela busca dos dados de um usuário",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Mensagem de sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Usuário encontrado com sucesso"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/User",
+                      "description": "Dados do usuário"
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Tasks do usuário listadas com sucesso",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/update": {
+      "put": {
+        "summary": "Atualizar usuário",
+        "description": "Rota responsável por atualizar os dados de um usuário",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "Nome atulizado",
+                    "email": "Descrição atulizada",
+                    "password": "Descrição atulizada"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "400": {
+            "description": "Requisição ruím",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Nenhum campo enviado para atualização"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "message": "Os campos a serem atualizados não podem estar vazios"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Usuário atualizado com sucesso"
+          }
+        }
+      }
+    },
+    "/users/{userId}/delete": {
+      "delete": {
+        "summary": "Excluir usuário",
+        "description": "Rota responsável por excluir os dados de um usuário",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Usuário removido com sucesso"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Logar usuário",
+        "description": "Rota responsável por criar um sessão de login para um usuário",
+        "tags": ["Session"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Session"
+              },
+              "examples": {
+                "Dados do login": {
+                  "value": {
+                    "email": "john@gmail.com",
+                    "password": "senha_secreta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "400": {
+            "description": "Requisição ruím",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Preencha os campos obrigatórios"
+                    }
+                  },
+                  "example2": {
+                    "value": {
+                      "message": "Credenciais inválidas",
+                      "field": "all"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Mensagem de sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Mensagem de sucesso"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "csrfToken": {
+                          "type": "string",
+                          "description": "Token CSRF"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "description": "ID do usuário"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "message": "Login realizado com sucesso",
+                      "data": {
+                        "csrfToken": "valor_do_csrfToken",
+                        "userId": "valor_do_userId"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Cookies a serem configurados no navegador do cliente"
+                },
+                "description": "Cookie com o id da sessão de login do usuário, configurado para expirar sete dias após sua criação"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout/{userId}": {
+      "delete": {
+        "summary": "Excluir sessão de login",
+        "description": "Rota responsável por excluir a sessão de login de um usuário",
+        "tags": ["Session"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID do usuário proprietário da tarefa",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "CookieAuth": [],
+            "CSRFTokenAuth": []
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Erro interno do servidor"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "200": {
+            "description": "Logout realizado com sucesso"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "IN_PROGRESS", "COMPLETED"],
+            "default": "PENDING"
+          },
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "csrfToken": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "CookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "authenticationCookie",
+        "description": "Cookie de autenticação da sessão do usuário"
+      },
+      "CSRFTokenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-CSRF-Token",
+        "description": "Token CSRF para proteção contra ataques de falsificação de solicitações entre sites"
+      }
+    }
+  }
+}
