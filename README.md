@@ -39,7 +39,7 @@ Depois de clonar o repositório, instale as dependências usando Yarn com o segu
 yarn install
 ```
 
-## Acessar a Documentação
+## Acessar a Documentação da API
 
 Para acessar a documentação da API, acesse o end-point "/api-docs" no servidor onde a aplicação está sendo executada.
 
