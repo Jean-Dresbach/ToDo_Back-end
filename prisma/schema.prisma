@@ -19,7 +19,7 @@ model User {
   email    String @unique @db.VarChar(100)
   password String @db.VarChar(100)
 
-  createdAt DateTime  @default(now()) @map("crated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   Task      Task[]
   Session   Session[]
@@ -28,21 +28,21 @@ model User {
 }
 
 enum TaskStatus {
-  PENDING
-  IN_PROGRESS
-  COMPLETED
+  PENDENTE
+  EM_PROGRESSO
+  COMPLETA
 }
 
 model Task {
   id          String     @id @default(uuid()) @db.Uuid
   title       String     @db.VarChar(100)
   description String     @db.VarChar(255)
-  status      TaskStatus @default(PENDING)
+  status      TaskStatus @default(PENDENTE)
 
   userId String @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  createdAt DateTime @default(now()) @map("crated_at")
+  createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("tasks")
@@ -55,7 +55,7 @@ model Session {
   userId String @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  createdAt DateTime @default(now()) @map("crated_at")
+  createdAt DateTime @default(now()) @map("created_at")
   expiresAt DateTime @map("expires_at")
 
   @@map("sessions")

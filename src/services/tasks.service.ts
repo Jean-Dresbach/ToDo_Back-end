@@ -10,13 +10,17 @@ export class TaskService {
       select: {
         id: true,
         title: true,
-        description: true
+        description: true,
+        status: true
+      },
+      orderBy: {
+        createdAt: "desc"
       }
     })
 
     return {
       code: 200,
-      message: "Tasks do usuário listadas com sucesso.",
+      message: "Tarefas do usuário listadas com sucesso.",
       data: tasks
     }
   }
@@ -36,7 +40,7 @@ export class TaskService {
 
     return {
       code: 201,
-      message: "Task criada com sucesso."
+      message: "Tarefa criada com sucesso."
     }
   }
 
@@ -53,7 +57,7 @@ export class TaskService {
     if (!task) {
       return {
         code: 404,
-        message: "Task não encontrada."
+        message: "Tarefa não encontrada."
       }
     }
 
@@ -68,7 +72,7 @@ export class TaskService {
 
     return {
       code: 200,
-      message: "Task atualizada com sucesso."
+      message: "Tarefa atualizada com sucesso."
     }
   }
 
@@ -80,7 +84,7 @@ export class TaskService {
     if (!task) {
       return {
         code: 404,
-        message: "Task não encontrada."
+        message: "Tarefa não encontrada."
       }
     }
 
@@ -90,7 +94,7 @@ export class TaskService {
 
     return {
       code: 200,
-      message: "Task removida com sucesso."
+      message: "Tarefa removida com sucesso."
     }
   }
 }

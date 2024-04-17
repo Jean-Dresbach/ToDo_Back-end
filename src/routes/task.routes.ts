@@ -4,17 +4,17 @@ import { TaskController } from "../controllers/task.controller"
 import { validateLoginToken } from "../middlewares/session.middleware"
 import {
   validateCreateTask,
-  validateUpdateUser
+  validateUpdateTask
 } from "../middlewares/task.middleware"
 
 const router = express.Router()
 
 const taskController = new TaskController()
 
-router.get("/tasks/:userId/create", validateLoginToken, taskController.index)
+router.get("/tasks/:userId/findMany", validateLoginToken, taskController.index)
 
 router.post(
-  "/tasks/:userId/findMany",
+  "/tasks/:userId/create",
   validateLoginToken,
   validateCreateTask,
   taskController.store
@@ -23,7 +23,7 @@ router.post(
 router.put(
   "/tasks/:userId/updateTask/:taskId",
   validateLoginToken,
-  validateUpdateUser,
+  validateUpdateTask,
   taskController.update
 )
 
