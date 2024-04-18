@@ -28,13 +28,15 @@ export class TaskService {
   public async create({
     title,
     description,
-    userId
+    userId,
+    status
   }: CreateTaskDTO): Promise<ResponseDTO> {
     await repository.task.create({
       data: {
         title,
         description,
-        userId
+        userId,
+        status
       }
     })
 

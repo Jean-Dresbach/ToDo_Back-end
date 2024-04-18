@@ -35,7 +35,18 @@
                 "$ref": "#/components/schemas/Task"
               },
               "examples": {
-                "task": {
+                "task_with_status": {
+                  "summary": "Exemplo de uma nova tarefa com status",
+                  "description": "Este exemplo demonstra como criar uma nova tarefa incluindo o campo 'status'.",
+                  "value": {
+                    "title": "Nova Tarefa",
+                    "description": "Terminar até quinta",
+                    "status": "PENDENTE"
+                  }
+                },
+                "task_without_status": {
+                  "summary": "Exemplo de uma nova tarefa sem status",
+                  "description": "Este exemplo demonstra como criar uma nova tarefa sem incluir o campo 'status', assumindo o valor padrão 'PENDENTE'.",
                   "value": {
                     "title": "Nova Tarefa",
                     "description": "Terminar até quinta"
@@ -683,8 +694,8 @@
           },
           "status": {
             "type": "string",
-            "enum": ["PENDING", "IN_PROGRESS", "COMPLETED"],
-            "default": "PENDING"
+            "enum": ["PENDENTE", "EM PROGRESSO", "COMPLETA"],
+            "default": "PENDENTE"
           },
           "userId": {
             "type": "string"
