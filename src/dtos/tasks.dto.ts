@@ -1,4 +1,4 @@
-type TaskStatus = "PENDING" | "IN_PROGRESS" | "COMPLETED"
+type TaskStatus = "PENDENTE" | "EM_PROGRESSO" | "COMPLETA"
 
 export interface CreateTaskDTO {
   title: string

@@ -33,7 +33,7 @@ export async function validateCreateTask(
   }
 }
 
-export async function validateUpdateUser(
+export async function validateUpdateTask(
   request: Request,
   response: Response,
   next: NextFunction
