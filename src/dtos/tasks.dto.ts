@@ -4,6 +4,7 @@ export interface CreateTaskDTO {
   title: string
   description: string
   userId: string
+  status?: TaskStatus
 }
 
 export interface UpdateTaskDTO {

@@ -25,12 +25,13 @@ export class TaskController {
   public async store(request: Request, response: Response) {
     try {
       const { userId } = request.params
-      const { title, description } = request.body
+      const { title, description, status } = request.body
 
       const createTaskDTO: CreateTaskDTO = {
         title,
         description,
-        userId
+        userId,
+        status
       }
 
       const result = await taskService.create(createTaskDTO)
