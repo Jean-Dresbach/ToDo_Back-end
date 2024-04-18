@@ -21,14 +21,14 @@ router.post(
 )
 
 router.put(
-  "/tasks/:userId/updateTask/:taskId",
+  "/tasks/:userId/update/:taskId",
   validateLoginToken,
   validateUpdateTask,
   taskController.update
 )
 
 router.delete(
-  "/tasks/:userId/deleteTask/:taskId",
+  "/tasks/:userId/delete/:taskId",
   validateLoginToken,
   taskController.delete
 )
